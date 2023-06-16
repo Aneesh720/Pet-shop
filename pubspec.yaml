@@ -6,7 +6,7 @@ publish_to: 'none'
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.17.3 <3.0.0"
+  sdk: ">=2.12.0 <3.0.0"
 
 dependencies:
   flutter:
@@ -16,7 +16,9 @@ dependencies:
   cupertino_icons: ^1.0.5
   get: ^4.6.5
   http: ^0.13.5
+  logger: ^1.1.0
   onesignal_flutter: ^3.4.1
+  flutter_svg: ^1.1.5
   google_fonts: ^3.0.1
   page_transition: ^2.0.9
   intl: ^0.17.0

@@ -2,15 +2,13 @@ import 'dart:developer';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_template/services/theme.dart';
+import 'package:flutter_template/views/home_screen.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 
-import 'services/init.dart';
-import 'views/screens/splash_screen/splash_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Init().initialize();
+
   runApp(const MyApp());
 }
 
@@ -80,9 +78,8 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       child: MaterialApp(
         navigatorKey: navigatorKey,
         themeMode: ThemeMode.light,
-        theme: CustomTheme.dark,
         debugShowCheckedModeBanner: false,
-        home: const SplashScreen(),
+        home: const HomeScreen(),
       ),
     );
   }
