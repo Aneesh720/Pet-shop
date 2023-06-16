@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_template/views/home_screen.dart';
+import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 
 
@@ -75,9 +76,13 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
           currentFocus.unfocus();
         }
       },
-      child: MaterialApp(
+      child: GetMaterialApp(
+        title: 'Dog Collection',
         navigatorKey: navigatorKey,
         themeMode: ThemeMode.light,
+        theme: ThemeData(
+          fontFamily: 'Poppins'
+        ),
         debugShowCheckedModeBanner: false,
         home: const HomeScreen(),
       ),

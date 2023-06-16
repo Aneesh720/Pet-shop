@@ -33,50 +33,55 @@ class _HomeScreenState extends State<HomeScreen> {
     return FutureBuilder(
       future: _homeViewModel.getTheValue(),
       builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          return mainDashboard();
-        } else {
-          // By default, show a loading spinner.
-          return const CircularProgressIndicator();
-        }
+        return Scaffold(
+          appBar: AppBar(
+            backgroundColor: primary,
+            title: Text(
+              "Dog Collection",
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w500,
+                color: quinary,
+              ),
+            ),
+            actions: [
+              InkWell(
+                onTap: () async{
+                  ///Refresh the Page
+                  loadTheValue=true;
+                  await _homeViewModel.getTheValue();
+                },
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    child: SvgPicture.asset(
+                      "assets/svgs/retry.svg",
+                      width: 26,
+                      height: 26,
+                      color: quinary,
+                    ),
+                  ),
+                ),
+              ),
+              addHorizontalSpace(20),
+            ],
+          ),
+          body:
+          (snapshot.hasData)?
+          Stack(children: [
+            Obx(() => _homeViewModel.pages[_homeViewModel.currentPage.value]),
+          ]):Container(
+            color: quinary,
+          ),
+          bottomNavigationBar: bottomNav(),
+        );
       },
     );
 
 
   }
 
-  Widget mainDashboard(){
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: primary,
-        title: Text(
-          "Dog Collection",
-          style: TextStyle(
-            fontSize: 15,
-            fontWeight: FontWeight.w400,
-            color: quinary,
-          ),
-        ),
-        actions: [
-          InkWell(
-            onTap: () {
-              ///Refresh the Page
-            },
-            child: SvgPicture.asset(
-              "assets/svgs/refresh.svg",
-              width: 16,
-              height: 16,
-              color: quinary,
-            ),
-          )
-        ],
-      ),
-      body: Stack(children: [
-        Obx(() => _homeViewModel.pages[_homeViewModel.currentPage.value]),
-      ]),
-      bottomNavigationBar: bottomNav(),
-    );
-  }
+
 
   void onTap(int index) {
     _homeViewModel.currentPage.value = index;
@@ -86,182 +91,184 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget bottomNav() {
     Size size = MediaQuery.of(context).size;
     return Obx(
-      () => Container(
-        decoration: BoxDecoration(
-          color: quinary,
-          boxShadow: [
-            BoxShadow(
-              color: dark,
+      () => BottomNavigationBar(
+        backgroundColor: primary,
+        elevation: 0,
+        type: BottomNavigationBarType.fixed,
+        showSelectedLabels: false,
+        showUnselectedLabels: false,
+        currentIndex: _homeViewModel.currentPage.value,
+        onTap: onTap,
+        items: [
+          //Home
+          BottomNavigationBarItem(
+            label: bottomNavigationTxt[0],
+            icon: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Container(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 15.0, vertical: 5),
+                    child: SvgPicture.asset(
+                      bottomNavUnSelectedImage[0],
+                      color: dark,
+                      width: 26,
+                      height: 26,
+                    ),
+                  ),
+                ),
+                addVerticalSpace(0),
+                Text(
+                  bottomNavigationTxt[0],
+                  style: TextStyle(
+                      fontWeight: FontWeight.w500, fontSize: 12, color: dark),
+                ),
+              ],
             ),
-          ],
-        ),
-        child: BottomNavigationBar(
-          backgroundColor: quinary,
-          elevation: 0,
-          type: BottomNavigationBarType.fixed,
-          showSelectedLabels: false,
-          showUnselectedLabels: false,
-          currentIndex: _homeViewModel.currentPage.value,
-          onTap: onTap,
-          items: [
-            //Home
-            BottomNavigationBarItem(
-              label: bottomNavigationTxt[0],
-              icon: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Container(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 8.0, vertical: 2),
-                      child: SvgPicture.asset(
-                        bottomNavUnSelectedImage[0],
-                        color: dark,
-                      ),
+            activeIcon: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(50),
+                    color: quaternary,
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 25.0, vertical: 8),
+                    child: SvgPicture.asset(
+                      bottomNavUnSelectedImage[0],
+                      color: quinary,
+                      width: 26,
+                      height: 26,
                     ),
                   ),
-                  addVerticalSpace(5),
-                  Text(
-                    bottomNavigationTxt[0],
-                    style: TextStyle(
-                        fontWeight: FontWeight.w500, fontSize: 12, color: dark),
-                  ),
-                ],
-              ),
-              activeIcon: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(50),
-                      color: quaternary,
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 8.0, vertical: 2),
-                      child: SvgPicture.asset(
-                        bottomNavSelectedImage[0],
-                        color: primary,
-                      ),
-                    ),
-                  ),
-                  addVerticalSpace(5),
-                  Text(
-                    bottomNavigationTxt[0],
-                    style: TextStyle(
-                        fontWeight: FontWeight.w500, fontSize: 12, color: dark),
-                  ),
-                ],
-              ),
+                ),
+                addVerticalSpace(0),
+                Text(
+                  bottomNavigationTxt[0],
+                  style: TextStyle(
+                      fontWeight: FontWeight.w500, fontSize: 12, color: quinary),
+                ),
+              ],
             ),
-            //Cart
-            BottomNavigationBarItem(
-              label: bottomNavigationTxt[1],
-              icon: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Container(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 8.0, vertical: 2),
-                      child: SvgPicture.asset(
-                        bottomNavUnSelectedImage[1],
-                        color: dark,
-                      ),
+          ),
+          //Cart
+          BottomNavigationBarItem(
+            label: bottomNavigationTxt[1],
+            icon: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Container(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 15.0, vertical: 5),
+                    child: SvgPicture.asset(
+                      bottomNavUnSelectedImage[1],
+                      color: dark,
+                      width: 26,
+                      height: 26,
                     ),
                   ),
-                  addVerticalSpace(5),
-                  Text(
-                    bottomNavigationTxt[1],
-                    style: TextStyle(
-                        fontWeight: FontWeight.w500, fontSize: 12, color: dark),
-                  ),
-                ],
-              ),
-              activeIcon: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(50),
-                      color: quaternary,
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 8.0, vertical: 2),
-                      child: SvgPicture.asset(
-                        bottomNavSelectedImage[1],
-                        color: primary,
-                      ),
-                    ),
-                  ),
-                  addVerticalSpace(5),
-                  Text(
-                    bottomNavigationTxt[1],
-                    style: TextStyle(
-                        fontWeight: FontWeight.w500, fontSize: 12, color: dark),
-                  ),
-                ],
-              ),
+                ),
+                addVerticalSpace(0),
+                Text(
+                  bottomNavigationTxt[1],
+                  style: TextStyle(
+                      fontWeight: FontWeight.w500, fontSize: 12, color: dark),
+                ),
+              ],
             ),
-            //History
-            BottomNavigationBarItem(
-              label: bottomNavigationTxt[2],
-              icon: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Container(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 8.0, vertical: 2),
-                      child: SvgPicture.asset(
-                        bottomNavUnSelectedImage[2],
-                        color: dark,
-                      ),
+            activeIcon: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(50),
+                    color: quaternary,
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 25.0, vertical: 8),
+                    child: SvgPicture.asset(
+                      bottomNavUnSelectedImage[1],
+                      color: quinary,
+                      width: 26,
+                      height: 26,
                     ),
                   ),
-                  addVerticalSpace(5),
-                  Text(
-                    bottomNavigationTxt[2],
-                    style: TextStyle(
-                        fontWeight: FontWeight.w500, fontSize: 12, color: dark),
-                  ),
-                ],
-              ),
-              activeIcon: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(50),
-                      color: quaternary,
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 8.0, vertical: 2),
-                      child: SvgPicture.asset(
-                        bottomNavSelectedImage[2],
-                        color: primary,
-                      ),
-                    ),
-                  ),
-                  addVerticalSpace(5),
-                  Text(
-                    bottomNavigationTxt[2],
-                    style: TextStyle(
-                        fontWeight: FontWeight.w500, fontSize: 12, color: dark),
-                  ),
-                ],
-              ),
+                ),
+                addVerticalSpace(0),
+                Text(
+                  bottomNavigationTxt[1],
+                  style: TextStyle(
+                      fontWeight: FontWeight.w500, fontSize: 12, color: quinary),
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+          //History
+          BottomNavigationBarItem(
+            label: bottomNavigationTxt[2],
+            icon: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Container(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 15.0, vertical: 5),
+                    child: SvgPicture.asset(
+                      bottomNavUnSelectedImage[2],
+                      color: dark,
+                      width: 26,
+                      height: 26,
+                    ),
+                  ),
+                ),
+                addVerticalSpace(0),
+                Text(
+                  bottomNavigationTxt[2],
+                  style: TextStyle(
+                      fontWeight: FontWeight.w500, fontSize: 12, color: dark),
+                ),
+              ],
+            ),
+            activeIcon: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(50),
+                    color: quaternary,
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 25.0, vertical: 8),
+                    child: SvgPicture.asset(
+                      bottomNavUnSelectedImage[2],
+                      color: quinary,
+                      width: 26,
+                      height: 26,
+                    ),
+                  ),
+                ),
+                addVerticalSpace(0),
+                Text(
+                  bottomNavigationTxt[2],
+                  style: TextStyle(
+                      fontWeight: FontWeight.w500, fontSize: 12, color: quinary),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

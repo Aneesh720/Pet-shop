@@ -1,19 +1,49 @@
+import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+import '../data/models/dog_details.dart';
+
+const String CART_DETAIL="Cart_Details";
+const String HISTORY_DETAIL="History_Details";
+
 const bottomNavigationTxt = [
   "Home",
   "Cart",
   "History",
 ];
 const bottomNavUnSelectedImage = [
-  "assets/img/home_unselected.svg",
-  "assets/img/matches_unselected.svg",
-  "assets/img/music_unselected.svg",
+  "assets/svgs/home_unselected.svg",
+  "assets/svgs/cart_selected.svg",
+  "assets/svgs/history_unselected.svg",
 ];
 const bottomNavSelectedImage = [
-  "assets/img/home_selected.svg",
-  "assets/img/matches_selected.svg",
-  "assets/img/music_selected.svg",
+  "assets/svgs/home_selected.svg",
+  "assets/svgs/cart_selected.svg",
+  "assets/svgs/history_selected.svg",
 ];
 
+bool loadTheValue=true;
+
+
+List<DogDetails> cartList=[];
+List<String> historyList=[];
+
+RxString dogImage="".obs;
+
+
+class PriceConverter {
+  static convert(price) {
+    return '₹ ${double.parse('$price').toStringAsFixed(2)}';
+  }
+
+  static convertRound(price) {
+    return '₹ ${double.parse('$price').toInt()}';
+  }
+
+  static convertToNumberFormat(num price) {
+    final format = NumberFormat("#,##,##,##0.00", "en_IN");
+    return '₹ ${format.format(price)}';
+  }
+}
 
 
 class AppConstants {

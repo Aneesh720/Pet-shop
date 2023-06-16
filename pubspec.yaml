@@ -23,15 +23,12 @@ dependencies:
   page_transition: ^2.0.9
   intl: ^0.17.0
   shared_preferences: ^2.0.15
-  flutter_inappwebview: ^5.4.3+7
   url_launcher: ^6.1.5
   fluttertoast: ^8.0.9
+  file: ^6.1.4
   cached_network_image: ^3.2.2
   lottie: ^1.4.3
   shimmer: ^2.0.0
-  image_picker: ^0.8.5+3
-  permission_handler: ^10.1.0
-#  dio: ^4.0.6
   custom_refresh_indicator: ^2.0.1
 
 dev_dependencies:
@@ -47,3 +44,21 @@ flutter:
     - assets/images/
     - assets/lotties/
     - assets/svgs/
+
+
+
+
+  fonts:
+    - family: Poppins
+      fonts:
+        - asset: assets/fonts/Poppins-Regular.ttf
+        - asset: assets/fonts/Poppins-Thin.ttf
+        - asset: assets/fonts/Poppins-Medium.ttf
+        - asset: assets/fonts/Poppins-ExtraLight.ttf
+        - asset: assets/fonts/Poppins-Light.ttf
+        - asset: assets/fonts/Poppins-SemiBold.ttf
+        - asset: assets/fonts/Poppins-Bold.ttf
+        - asset: assets/fonts/Poppins-ExtraBold.ttf
+
+
+    #

@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:flutter_template/services.dart';
 import 'package:flutter_template/utils/constant.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:http/http.dart' as http;
@@ -24,20 +25,48 @@ class HomeViewModel{
 
 
   Future getTheValue()async{
-    final response = await http
-        .get(Uri.parse(AppConstants().getBaseUrl));
+    if(loadTheValue) {
+      historyList=[];
+      cartList=[];
+      try {
 
-    if (response.statusCode == 200) {
-      // If the server did return a 200 OK response,
-      // then parse the JSON.
-      Logger logger=Logger();
-      logger.i(DogDetails.fromJson(jsonDecode(response.body)));
-      return DogDetails.fromJson(jsonDecode(response.body));
-    } else {
-      // If the server did not return a 200 OK response,
-      // then throw an exception.
-      throw Exception('Failed to load the Image for Dos');
+        historyList=await getFromHistoryLocalStorage();
+        Logger logger=Logger();
+        logger.e("Error1 ");
+
+        cartList=await getFromCartLocalStorage();
+      } on Exception catch (e) {
+        // TODO
+        Logger logger=Logger();
+        logger.e("Error1 ${e}");
+      }
+
+      final response = await http
+          .get(Uri.parse(AppConstants().getBaseUrl));
+
+      if (response.statusCode == 200) {
+        // If the server did return a 200 OK response,
+        // then parse the JSON.
+        Logger logger = Logger();
+        logger.i(DogDetails.fromJson(jsonDecode(response.body)));
+
+        /// Adding the Image to List of History
+
+        dogImage.value = DogDetails
+            .fromJson(jsonDecode(response.body))
+            .imageUrl;
+        historyList.add(DogDetails.fromJson(jsonDecode(response.body)).imageUrl);
+        ///Upload the Value to SharedPreference
+        saveHistoryToLocalStorage();
+        loadTheValue = false;
+        return 1;
+      } else {
+        // If the server did not return a 200 OK response,
+        // then throw an exception.
+        throw Exception('Failed to load the Image for Dos');
+      }
     }
+    return 1;
   }
 
 }
